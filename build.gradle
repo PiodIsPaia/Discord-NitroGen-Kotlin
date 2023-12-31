@@ -1,0 +1,36 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.21'
+    id 'application'
+}
+
+group = 'org.yuki'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
+}
+
+test {
+    useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(17)
+}
+application {
+    mainClass.set("org.yuki.MainKt")
+}
+
+tasks.jar {
+    // Configuração da tarefa jar
+    manifest {
+        attributes["Main-Class"] = application.mainClass
+    }
+    from(configurations.runtimeClasspath.getFiles().collect { if (it.isDirectory()) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
