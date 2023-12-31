@@ -69,7 +69,7 @@ class TokenGenerator(private val numTokens: Int) {
     private fun handleResponse(response: Response, tokenIndex: Int) {
         when (response.code) {
             200 -> {
-                val token = response.body.string()
+                val token = response.body.string().substringAfter("{\"token\":\"").substringBefore("\"}")
                 val line = "https://discord.com/billing/partner-promotions/1180231712274387115/$token\n"
                 outputFile.appendText(line)
                 println("Token $tokenIndex gerado e salvo.")
